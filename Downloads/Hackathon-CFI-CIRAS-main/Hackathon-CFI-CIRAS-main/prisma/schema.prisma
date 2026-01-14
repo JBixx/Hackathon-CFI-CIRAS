@@ -1,13 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+  provider = "postgresql"
+}
 
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-}
 
 // Enumérations
 enum Role {
@@ -92,7 +90,7 @@ model Hackathon {
   id                    String          @id @default(uuid())
   nom                   String
   description           String?
-  themes                String[]        @default([])
+  themes                Json            @default("[]")
   dateDebut             DateTime
   dateFin               DateTime
   dateLimiteInscription DateTime
@@ -118,7 +116,7 @@ model Inscription {
   userId       String
   hackathonId  String
   promo        Promo?
-  technologies String[]          @default([])
+  technologies Json              @default("[]")
   statut       StatutInscription @default(EN_ATTENTE)
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
@@ -164,7 +162,7 @@ model IALog {
   input        Json
   output       Json
   score        Float?
-  suggestions  String[] @default([])
+  suggestions  Json     @default("[]")
   metadata     Json?
   createdAt    DateTime @default(now())
 
@@ -227,7 +225,7 @@ model AnalyseIA {
   scoreMatching Float    @default(0)
   scoreSpam     Float    @default(0)
   suggestionsEquipes Json?
-  autoTags      String[] @default([])
+  autoTags      Json     @default("[]")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -247,7 +245,7 @@ model Resultats {
   deuxiemePlace           String?
   troisiemePlace          String?
   podiumPublie            Boolean  @default(false)
-  preselectionnes         String[] @default([])
+  preselectionnes         Json     @default("[]")
   preselectionsPubliees   Boolean  @default(false)
   documentPreselectionsName String?
   documentPreselectionsUploadedAt DateTime?
