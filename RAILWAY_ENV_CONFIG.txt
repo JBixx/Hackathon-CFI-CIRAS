@@ -1,5 +1,8 @@
-﻿# Configuration pour Railway PostgreSQL - URL PUBLIQUE
-DATABASE_URL="postgresql://postgres:VQWiEqTkkrUvFLfUvSNXIiicPdRwGSiM@mainline.proxy.rlwy.net:12015/railway"
+# 🚂 CONFIGURATION RAILWAY - À COPIER DANS VOTRE .env
+# Remplacez le contenu de votre fichier .env par ceci
+
+# Configuration pour Railway PostgreSQL
+DATABASE_URL="postgresql://postgres:VQWiEqTkkrUvFLfUvSNXIiicPdRwGSiM@postgres.railway.internal:5432/railway"
 
 # JWT Secret pour l'authentification
 JWT_SECRET="hackathon-jwt-secret-railway-2026"
@@ -20,7 +23,7 @@ HOST="0.0.0.0"
 
 # Variables Railway spécifiques
 PGPASSWORD="VQWiEqTkkrUvFLfUvSNXIiicPdRwGSiM"
-PGHOST="mainline.proxy.rlwy.net"
-PGPORT=12015
+PGHOST="postgres.railway.internal"
+PGPORT=5432
 PGDATABASE="railway"
 PGUSER="postgres"

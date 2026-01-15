@@ -7511,3 +7511,72 @@
 {"context":"PdfExtractionService","level":"info","message":"  Match 2: stonelikesitou28@gmail.com","timestamp":"2026-01-13T15:50:14.620Z"}
 {"context":"PdfExtractionService","level":"info","message":"  Match 3: bienvenuemoukouri04@gmail.com","timestamp":"2026-01-13T15:50:14.620Z"}
 {"context":"PdfExtractionService","level":"info","message":"  Match 4: jonathanmoukouri18@gmail.com","timestamp":"2026-01-13T15:50:14.620Z"}
+{"context":"WebSocketsController","level":"info","message":"EventsGateway subscribed to the \"subscribe-dashboard\" message","timestamp":"2026-01-15T05:35:27.811Z"}
+{"context":"WebSocketsController","level":"info","message":"EventsGateway subscribed to the \"unsubscribe-dashboard\" message","timestamp":"2026-01-15T05:35:27.812Z"}
+{"context":"RoutesResolver","level":"info","message":"AppController {/}:","timestamp":"2026-01-15T05:35:27.814Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/, GET} route","timestamp":"2026-01-15T05:35:27.816Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/health, GET} route","timestamp":"2026-01-15T05:35:27.817Z"}
+{"context":"RoutesResolver","level":"info","message":"AuthController {/auth}:","timestamp":"2026-01-15T05:35:27.818Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/auth/register, POST} route","timestamp":"2026-01-15T05:35:27.819Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/auth/login, POST} route","timestamp":"2026-01-15T05:35:27.820Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/auth/profile, GET} route","timestamp":"2026-01-15T05:35:27.821Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/auth/profile, PUT} route","timestamp":"2026-01-15T05:35:27.822Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/auth/change-password, POST} route","timestamp":"2026-01-15T05:35:27.823Z"}
+{"context":"RoutesResolver","level":"info","message":"HackathonController {/hackathons}:","timestamp":"2026-01-15T05:35:27.823Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/hackathons/public, GET} route","timestamp":"2026-01-15T05:35:27.824Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/hackathons/available, GET} route","timestamp":"2026-01-15T05:35:27.828Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/hackathons/past, GET} route","timestamp":"2026-01-15T05:35:27.829Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/hackathons/:id, GET} route","timestamp":"2026-01-15T05:35:27.830Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/hackathons, POST} route","timestamp":"2026-01-15T05:35:27.830Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/hackathons/:id, PUT} route","timestamp":"2026-01-15T05:35:27.831Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/hackathons/:id, DELETE} route","timestamp":"2026-01-15T05:35:27.832Z"}
+{"context":"RoutesResolver","level":"info","message":"AnnonceController {/annonces}:","timestamp":"2026-01-15T05:35:27.832Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/annonces/public, GET} route","timestamp":"2026-01-15T05:35:27.832Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/annonces/inscrits, GET} route","timestamp":"2026-01-15T05:35:27.833Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/annonces/admin/all, GET} route","timestamp":"2026-01-15T05:35:27.833Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/annonces/:id, GET} route","timestamp":"2026-01-15T05:35:27.834Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/annonces/admin/annonces, POST} route","timestamp":"2026-01-15T05:35:27.834Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/annonces/admin/annonces/:id, PUT} route","timestamp":"2026-01-15T05:35:27.834Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/annonces/admin/annonces/:id, DELETE} route","timestamp":"2026-01-15T05:35:27.835Z"}
+{"context":"RoutesResolver","level":"info","message":"AdminController {/admin}:","timestamp":"2026-01-15T05:35:27.835Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/annonces, POST} route","timestamp":"2026-01-15T05:35:27.836Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/dashboard, GET} route","timestamp":"2026-01-15T05:35:27.837Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/inscriptions, GET} route","timestamp":"2026-01-15T05:35:27.838Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/monitoring/logs, GET} route","timestamp":"2026-01-15T05:35:27.839Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/monitoring/metrics, GET} route","timestamp":"2026-01-15T05:35:27.839Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/inscriptions/:id, PUT} route","timestamp":"2026-01-15T05:35:27.840Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/inscriptions/:id, DELETE} route","timestamp":"2026-01-15T05:35:27.841Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/users, GET} route","timestamp":"2026-01-15T05:35:27.843Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/users/:id, PUT} route","timestamp":"2026-01-15T05:35:27.845Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/users/:id, DELETE} route","timestamp":"2026-01-15T05:35:27.846Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/profile, GET} route","timestamp":"2026-01-15T05:35:27.847Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/admin/profile, PUT} route","timestamp":"2026-01-15T05:35:27.847Z"}
+{"context":"RoutesResolver","level":"info","message":"AiController {/ai}:","timestamp":"2026-01-15T05:35:27.848Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/ai/analyze-inscription/:userId, POST} route","timestamp":"2026-01-15T05:35:27.848Z"}
+{"context":"RoutesResolver","level":"info","message":"InscriptionsController {/inscriptions}:","timestamp":"2026-01-15T05:35:27.849Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/inscriptions/mes-inscriptions, GET} route","timestamp":"2026-01-15T05:35:27.849Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/inscriptions/:id, GET} route","timestamp":"2026-01-15T05:35:27.850Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/inscriptions/:id, DELETE} route","timestamp":"2026-01-15T05:35:27.850Z"}
+{"context":"RoutesResolver","level":"info","message":"ResultatsController {/resultats}:","timestamp":"2026-01-15T05:35:27.851Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/public, GET} route","timestamp":"2026-01-15T05:35:27.851Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId, GET} route","timestamp":"2026-01-15T05:35:27.851Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/podium, POST} route","timestamp":"2026-01-15T05:35:27.852Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/podium, DELETE} route","timestamp":"2026-01-15T05:35:27.853Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/preselections, POST} route","timestamp":"2026-01-15T05:35:27.854Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/preselections, DELETE} route","timestamp":"2026-01-15T05:35:27.854Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/preselections/document, POST} route","timestamp":"2026-01-15T05:35:27.855Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/preselections/document, GET} route","timestamp":"2026-01-15T05:35:27.856Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/preselections/document, DELETE} route","timestamp":"2026-01-15T05:35:27.856Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/resultats/hackathon/:hackathonId/inscriptions/liste-pdf, GET} route","timestamp":"2026-01-15T05:35:27.857Z"}
+{"context":"RoutesResolver","level":"info","message":"TeamsController {/teams}:","timestamp":"2026-01-15T05:35:27.857Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/public, GET} route","timestamp":"2026-01-15T05:35:27.858Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/hackathon/:hackathonId, GET} route","timestamp":"2026-01-15T05:35:27.861Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/admin/hackathon/:hackathonId, GET} route","timestamp":"2026-01-15T05:35:27.862Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/hackathon/:hackathonId, POST} route","timestamp":"2026-01-15T05:35:27.862Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/:id, GET} route","timestamp":"2026-01-15T05:35:27.863Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/:id, PATCH} route","timestamp":"2026-01-15T05:35:27.864Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/:id, DELETE} route","timestamp":"2026-01-15T05:35:27.864Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/:teamId/members, POST} route","timestamp":"2026-01-15T05:35:27.865Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/teams/:teamId/members/:userId, DELETE} route","timestamp":"2026-01-15T05:35:27.865Z"}
+{"context":"PrismaService","level":"info","message":"Connecté à la base de données PostgreSQL","timestamp":"2026-01-15T05:35:27.922Z"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-01-15T05:35:27.925Z"}
