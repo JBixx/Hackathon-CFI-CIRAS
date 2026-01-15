@@ -12,3 +12,4 @@ echo "🔨 Building NestJS application..."
 npx nest build
 
 echo "✅ Build completed successfully!"
+

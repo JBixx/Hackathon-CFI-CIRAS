@@ -68,3 +68,4 @@ API_BASE_URL: [VOTRE_URL_RENDER]
 DATABASE_URL: postgresql://hackathon_db_3h8o_user:pnfvc3Pb8A5yNwQ2ar0r8tQo7dpyxrgH@dpg-d5hq3aidbo4c73e65950-a.frankfurt-postgres.render.com:5432/hackathon_db_3h8o
 JWT_SECRET: hackathon-secret-jwt-key-2026-production-super-secure-123456789!@#$%^&*()
 NODE_ENV: production
+

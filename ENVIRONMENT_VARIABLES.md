@@ -48,3 +48,4 @@ Avant le déploiement, vérifier que :
 - [ ] `JWT_SECRET` est défini et sécurisé
 - [ ] Les migrations Prisma sont appliquées (`npm run prisma:deploy`)
 - [ ] La génération Prisma est faite (`npm run prisma:generate`)
+

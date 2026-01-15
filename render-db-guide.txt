@@ -49,3 +49,4 @@ postgresql://hackathon_db_3h8o_user:abcd1234efgh5678@dpg-d5hq3aidbo4c73e65950-a:
 
 ⚠️ IMPORTANT : Le mot de passe est TRÈS long (64+ caractères)
    Assurez-vous de le copier ENTIEREMENT !
+

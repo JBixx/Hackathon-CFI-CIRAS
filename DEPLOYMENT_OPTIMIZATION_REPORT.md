@@ -124,3 +124,4 @@ Toutes les optimisations critiques ont été appliquées. Le projet devrait main
 - Utiliser des ressources raisonnables
 - Être compatible Railway/Render
 - Maintenir les fonctionnalités existantes
+
