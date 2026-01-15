@@ -1,0 +1,296 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enumérations
+enum Role {
+  USER
+  ADMIN
+}
+
+enum HackathonStatus {
+  UPCOMING
+  ONGOING
+  PAST
+}
+
+enum AnnonceCible {
+  PUBLIC
+  INSCRITS
+}
+
+enum Promo {
+  L1
+  L2
+  L3
+  M1
+  M2
+}
+
+enum StatutInscription {
+  EN_ATTENTE
+  VALIDE
+  REFUSE
+}
+
+enum TypeIALog {
+  ANALYSE
+  SUGGESTION
+  SURVEILLANCE
+}
+
+enum TypeEvenementSurveillance {
+  INSCRIPTION
+  CONNEXION
+  ACTIVITE
+}
+
+enum NiveauEvenementSurveillance {
+  INFO
+  WARNING
+  ERROR
+}
+
+enum TypeNotification {
+  EMAIL
+  SITE
+  SMS
+}
+
+// Modèles principaux
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  nom       String
+  prenom    String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  inscriptions    Inscription[]
+  annonces        Annonce[]
+  iaLogs          IALog[]
+  evenements      EvenementSurveillance[]
+  notifications   Notification[]
+  teamMembers     TeamMember[]
+
+  @@index([email])
+  @@index([role])
+  @@index([createdAt])
+}
+
+model Hackathon {
+  id                    String          @id @default(uuid())
+  nom                   String
+  description           String?
+  themes                String[]        @default([])
+  dateDebut             DateTime
+  dateFin               DateTime
+  dateLimiteInscription DateTime
+  status                HackathonStatus @default(UPCOMING)
+  registrationGoal      Int?            @default(300)
+  currentRegistrations  Int?            @default(0)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  // Relations
+  inscriptions    Inscription[]
+  annonces        Annonce[]
+  teams           Team[]
+  resultats       Resultats?
+
+  @@index([status, dateDebut])
+  @@index([dateLimiteInscription])
+  @@index([status])
+}
+
+model Inscription {
+  id           String            @id @default(uuid())
+  userId       String
+  hackathonId  String
+  promo        Promo?
+  technologies String[]          @default([])
+  statut       StatutInscription @default(EN_ATTENTE)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  // Relations
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hackathon  Hackathon   @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  analysesIA AnalyseIA[]
+
+  @@unique([userId, hackathonId])
+  @@index([hackathonId])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([statut])
+}
+
+model Annonce {
+  id          String        @id @default(uuid())
+  titre       String
+  contenu     String
+  cible       AnnonceCible  @default(PUBLIC)
+  hackathonId String?
+  sentAt      DateTime?     @default(now())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  hackathon    Hackathon?    @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  notifications Notification[]
+
+  @@index([hackathonId])
+  @@index([createdAt])
+  @@index([cible, createdAt])
+  @@index([sentAt])
+}
+
+model IALog {
+  id           String   @id @default(uuid())
+  userId       String
+  type         TypeIALog
+  input        Json
+  output       Json
+  score        Float?
+  suggestions  String[] @default([])
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([type])
+  @@index([type, createdAt])
+}
+
+model EvenementSurveillance {
+  id          String                    @id @default(uuid())
+  type        TypeEvenementSurveillance
+  valeur      Float
+  seuil       Float
+  niveau      NiveauEvenementSurveillance
+  message     String
+  details     Json?
+  userId      String?
+  createdAt   DateTime                  @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([type])
+  @@index([niveau])
+  @@index([createdAt])
+  @@index([type, niveau, createdAt])
+  @@index([userId])
+  @@index([valeur, seuil])
+}
+
+model Notification {
+  id           String         @id @default(uuid())
+  type         TypeNotification
+  message      String
+  scheduledAt  DateTime?
+  sent         Boolean        @default(false)
+  sentAt       DateTime?
+  createdAt    DateTime       @default(now())
+
+  // Relations
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  annonce  Annonce? @relation(fields: [annonceId], references: [id], onDelete: Cascade)
+  annonceId String?
+
+  @@index([userId])
+  @@index([annonceId])
+  @@index([scheduledAt])
+  @@index([sent])
+  @@index([type, sent])
+}
+
+model AnalyseIA {
+  id            String   @id @default(uuid())
+  inscriptionId String   @unique
+  scoreMatching Float    @default(0)
+  scoreSpam     Float    @default(0)
+  suggestionsEquipes Json?
+  autoTags      String[] @default([])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  inscription Inscription @relation(fields: [inscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([inscriptionId])
+  @@index([scoreMatching])
+  @@index([scoreSpam])
+  @@index([createdAt])
+}
+
+model Resultats {
+  id                      String   @id @default(uuid())
+  hackathonId             String   @unique
+  premierPlace            String?
+  deuxiemePlace           String?
+  troisiemePlace          String?
+  podiumPublie            Boolean  @default(false)
+  preselectionnes         String[] @default([])
+  preselectionsPubliees   Boolean  @default(false)
+  documentPreselectionsName String?
+  documentPreselectionsUploadedAt DateTime?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  // Relations
+  hackathon Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+
+  @@index([hackathonId])
+  @@index([podiumPublie])
+  @@index([preselectionsPubliees])
+}
+
+model Team {
+  id          String       @id @default(uuid())
+  nom         String
+  description String?
+  hackathonId String
+  projetNom   String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  hackathon Hackathon   @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  members   TeamMember[]
+
+  @@index([hackathonId])
+  @@index([projetNom])
+}
+
+model TeamMember {
+  id        String   @id @default(uuid())
+  teamId    String
+  userId    String
+  role      String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
