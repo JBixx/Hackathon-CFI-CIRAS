@@ -1,6 +1,8 @@
 // Charger les variables d'environnement EN PREMIER
 // Utiliser require pour garantir l'ordre d'exécution
+console.log('🔧 Loading environment configuration...');
 require('./config/env.config');
+console.log('✅ Environment configuration loaded');
 
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -9,7 +11,9 @@ import { AppModule } from './app.module';
 import { ConditionalValidationPipe } from './common/pipes/conditional-validation.pipe';
 
 async function bootstrap() {
+  console.log('🏗️  Creating NestJS application...');
   const app = await NestFactory.create(AppModule);
+  console.log('✅ NestJS application created');
 
   // Configuration CORS pour autoriser le frontend Next.js
   // Utiliser une fonction pour vérifier l'origine dynamiquement
@@ -77,12 +81,9 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
   const host = process.env.HOST || '0.0.0.0';
+  console.log(`🎯 Attempting to listen on ${host}:${port}...`);
   await app.listen(port, host);
-  console.log(
-    `Application is running on: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`,
-  );
-  console.log(
-    `Swagger documentation: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}/api`,
-  );
+  console.log(`🎉 SUCCESS: Application is running on: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`);
+  console.log(`📚 Swagger documentation: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}/api`);
 }
 bootstrap();
