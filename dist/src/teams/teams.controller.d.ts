@@ -22,8 +22,8 @@ export declare class TeamsController {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         hackathonId: string;
+        description: string | null;
         projetNom: string | null;
     })[]>;
     getTeamsByHackathon(hackathonId: string): Promise<{
@@ -31,10 +31,10 @@ export declare class TeamsController {
             id: string;
             nom: string;
             createdAt: Date;
-            description: string | null;
             _count: {
                 members: number;
             };
+            description: string | null;
             projetNom: string | null;
         }[];
         meta: {
@@ -65,8 +65,8 @@ export declare class TeamsController {
             nom: string;
             createdAt: Date;
             updatedAt: Date;
-            description: string | null;
             hackathonId: string;
+            description: string | null;
             projetNom: string | null;
         })[];
         meta: {
@@ -96,8 +96,8 @@ export declare class TeamsController {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         hackathonId: string;
+        description: string | null;
         projetNom: string | null;
     }>;
     getTeamById(id: string): Promise<{
@@ -120,8 +120,8 @@ export declare class TeamsController {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         hackathonId: string;
+        description: string | null;
         projetNom: string | null;
     }>;
     updateTeam(id: string, payload: any): Promise<{
@@ -144,8 +144,8 @@ export declare class TeamsController {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         hackathonId: string;
+        description: string | null;
         projetNom: string | null;
     }>;
     deleteTeam(id: string): Promise<{

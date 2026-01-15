@@ -83,11 +83,11 @@ export declare class AdminController {
             createdAt: Date;
             userId: string;
             type: import("@prisma/client").$Enums.TypeIALog;
-            output: import("@prisma/client/runtime/client").JsonValue;
             input: import("@prisma/client/runtime/client").JsonValue;
-            metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            output: import("@prisma/client/runtime/client").JsonValue;
             score: number | null;
             suggestions: string[];
+            metadata: import("@prisma/client/runtime/client").JsonValue | null;
         })[];
         meta: {
             page: number;
