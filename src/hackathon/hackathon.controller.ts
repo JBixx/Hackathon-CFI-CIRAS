@@ -87,9 +87,9 @@ export class HackathonController {
   })
   async getPastHackathons(@Query() query: any) {
     return this.hackathonService.getPastHackathons(
-      query.page || 1,
-      query.limit || 10,
-      query.year,
+      parseInt(query.page) || 1,
+      parseInt(query.limit) || 10,
+      query.year ? parseInt(query.year) : undefined,
     );
   }
 

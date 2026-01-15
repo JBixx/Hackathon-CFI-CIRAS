@@ -1,13 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+console.log('🔧 MAIN: Loading environment configuration...');
 require('./config/env.config');
+console.log('✅ MAIN: Environment configuration loaded');
 const core_1 = require("@nestjs/core");
 const swagger_1 = require("@nestjs/swagger");
 const nest_winston_1 = require("nest-winston");
 const app_module_1 = require("./app.module");
 const conditional_validation_pipe_1 = require("./common/pipes/conditional-validation.pipe");
 async function bootstrap() {
+    console.log('🏗️ MAIN: Creating NestJS application...');
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    console.log('✅ MAIN: NestJS application created successfully');
+    console.log('🔒 MAIN: Configuring CORS...');
     app.enableCors({
         origin: (origin, callback) => {
             if (!origin) {
@@ -60,9 +65,11 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup('api', app, document);
     const port = process.env.PORT || 3000;
     const host = process.env.HOST || '0.0.0.0';
+    console.log(`🚀 MAIN: Starting server on ${host}:${port}...`);
     await app.listen(port, host);
-    console.log(`Application is running on: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`);
-    console.log(`Swagger documentation: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}/api`);
+    console.log(`✅ MAIN: Application successfully started!`);
+    console.log(`🌐 Application is running on: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}`);
+    console.log(`📚 Swagger documentation: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}/api`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

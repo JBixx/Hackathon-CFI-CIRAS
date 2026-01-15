@@ -1,0 +1,54 @@
+# 🔐 INFORMATIONS DE CONNEXION BASE DE DONNÉES
+# Pour connecter le backend déployé à la base de données Railway
+
+## ⚠️ IMPORTANT - NE PARTAGEZ PAS CES INFORMATIONS PUBLIQUEMENT !
+
+## 📊 Informations de connexion Railway :
+
+### URL de connexion publique (la plus importante) :
+```
+DATABASE_URL="postgresql://postgres:VQWiEqTkkrUvFLfUvSNXIiicPdRwGSiM@mainline.proxy.rlwy.net:12015/railway"
+```
+
+### Variables individuelles :
+```
+PGHOST="mainline.proxy.rlwy.net"
+PGPORT=12015
+PGDATABASE="railway"
+PGUSER="postgres"
+PGPASSWORD="VQWiEqTkkrUvFLfUvSNXIiicPdRwGSiM"
+```
+
+## 🎯 Instructions pour vos amis :
+
+### 1. Dans leur déploiement (Railway/Render), ajouter cette variable d'environnement :
+```
+DATABASE_URL=postgresql://postgres:VQWiEqTkkrUvFLfUvSNXIiicPdRwGSiM@mainline.proxy.rlwy.net:12015/railway
+```
+
+### 2. Le backend se connectera automatiquement et verra toutes les tables :
+- ✅ User (utilisateurs et admins)
+- ✅ Hackathon (événements)
+- ✅ Inscription (inscriptions participants)
+- ✅ Annonce (communications)
+- ✅ Team & TeamMember (gestion équipes)
+- ✅ Resultats (classements)
+- ✅ IALog (logs IA)
+- ✅ EvenementSurveillance (monitoring)
+- ✅ Notification (emails/sites)
+- ✅ AnalyseIA (analyses automatiques)
+
+### 3. Comptes de test disponibles :
+- **Admin :** admin@hackathon.com / admin123
+- **User 1 :** user1@hackathon.com / user123
+- **User 2 :** user2@hackathon.com / user123
+
+## 🔒 Sécurité :
+- Cette URL contient le mot de passe de votre base
+- Partagez-la UNIQUEMENT avec vos amis de confiance
+- Ne la postez PAS sur des forums ou réseaux sociaux
+- Si vous changez le mot de passe Railway, il faudra mettre à jour cette URL partout
+
+## 📝 Note :
+Les tables sont déjà créées et remplies avec des données de test.
+Vos amis n'ont pas besoin d'exécuter `prisma db push` ni le seed - tout est déjà prêt !

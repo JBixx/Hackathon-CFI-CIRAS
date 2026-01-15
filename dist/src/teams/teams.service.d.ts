@@ -26,8 +26,8 @@ export declare class TeamsService {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        hackathonId: string;
         description: string | null;
+        hackathonId: string;
         projetNom: string | null;
     }>;
     getPublicTeamsByHackathon(hackathonId: string, page?: number, limit?: number): Promise<{
@@ -35,10 +35,10 @@ export declare class TeamsService {
             id: string;
             nom: string;
             createdAt: Date;
+            description: string | null;
             _count: {
                 members: number;
             };
-            description: string | null;
             projetNom: string | null;
         }[];
         meta: {
@@ -69,8 +69,8 @@ export declare class TeamsService {
             nom: string;
             createdAt: Date;
             updatedAt: Date;
-            hackathonId: string;
             description: string | null;
+            hackathonId: string;
             projetNom: string | null;
         })[];
         meta: {
@@ -100,8 +100,8 @@ export declare class TeamsService {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        hackathonId: string;
         description: string | null;
+        hackathonId: string;
         projetNom: string | null;
     }>;
     updateTeam(teamId: string, data: {
@@ -128,8 +128,8 @@ export declare class TeamsService {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        hackathonId: string;
         description: string | null;
+        hackathonId: string;
         projetNom: string | null;
     }>;
     deleteTeam(teamId: string): Promise<{
@@ -172,8 +172,8 @@ export declare class TeamsService {
         nom: string;
         createdAt: Date;
         updatedAt: Date;
-        hackathonId: string;
         description: string | null;
+        hackathonId: string;
         projetNom: string | null;
     })[]>;
 }

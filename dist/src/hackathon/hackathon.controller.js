@@ -36,7 +36,7 @@ let HackathonController = class HackathonController {
         return this.hackathonService.getAvailableHackathons();
     }
     async getPastHackathons(query) {
-        return this.hackathonService.getPastHackathons(query.page || 1, query.limit || 10, query.year);
+        return this.hackathonService.getPastHackathons(parseInt(query.page) || 1, parseInt(query.limit) || 10, query.year ? parseInt(query.year) : undefined);
     }
     async getHackathonById(id) {
         return this.hackathonService.getHackathonById(id);

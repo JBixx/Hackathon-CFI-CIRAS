@@ -18,28 +18,39 @@ const pg_1 = require("pg");
 let PrismaService = PrismaService_1 = class PrismaService extends client_1.PrismaClient {
     logger = new common_1.Logger(PrismaService_1.name);
     constructor() {
+        console.log('🗄️ PRISMA: Initializing PrismaService...');
         const databaseUrl = process.env.DATABASE_URL;
         if (!databaseUrl) {
             const errorMessage = "DATABASE_URL n'est pas défini dans les variables d'environnement. " +
                 'Veuillez créer un fichier .env à la racine du projet avec DATABASE_URL.';
-            console.error('❌', errorMessage);
+            console.error('❌ PRISMA:', errorMessage);
             throw new Error('DATABASE_URL est requis. Créez un fichier .env à la racine du projet avec DATABASE_URL.');
         }
+        console.log('✅ PRISMA: DATABASE_URL found, configuring connection...');
         const connectionString = databaseUrl.replace('prisma://', 'postgresql://');
+        console.log('🔧 PRISMA: Connection string configured (PostgreSQL adapter)');
+        console.log('🏊 PRISMA: Creating PostgreSQL connection pool...');
         const pool = new pg_1.Pool({ connectionString });
+        console.log('✅ PRISMA: PostgreSQL pool created');
+        console.log('🔌 PRISMA: Creating Prisma adapter...');
         const adapter = new adapter_pg_1.PrismaPg(pool);
+        console.log('✅ PRISMA: Prisma adapter created');
         super({
             adapter,
             log: ['warn', 'error'],
         });
-        this.logger.log('PrismaClient avec adaptateur PostgreSQL initialisé');
+        console.log('🎉 PRISMA: PrismaClient avec adaptateur PostgreSQL initialisé avec succès');
     }
     async onModuleInit() {
+        console.log('🔌 PRISMA: Attempting to connect to database...');
         try {
             await this.$connect();
+            console.log('✅ PRISMA: Successfully connected to PostgreSQL database');
             this.logger.log('Connecté à la base de données PostgreSQL');
         }
         catch (error) {
+            console.log('❌ PRISMA: Database connection failed:', error.message);
+            console.log('🔍 PRISMA: Error details:', error);
             this.logger.error('Erreur de connexion à la base de données:', error);
             throw error;
         }
