@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ajouter un Professeur - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Ajouter un Professeur{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'core:teachers_management' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" style="min-height: 70vh;">
+            <div class="card-header bg-light border-0">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-badge text-primary me-3" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h5 class="mb-0">Nouveau professeur</h5>
+                        <small class="text-muted">Informations du personnel enseignant</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Section: Identité -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-person-lines-fill text-primary me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Identité du professeur</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control {{ form.last_name.errors|yesno:'is-invalid,' }}" id="{{ form.last_name.id_for_label }}" name="{{ form.last_name.name }}" placeholder="Nom de famille" value="{{ form.last_name.value|default:'' }}" required>
+                                    <label for="{{ form.last_name.id_for_label }}">
+                                        <i class="bi bi-fonts me-1"></i>
+                                        Nom de famille *
+                                    </label>
+                                    {% if form.last_name.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.last_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control {{ form.first_name.errors|yesno:'is-invalid,' }}" id="{{ form.first_name.id_for_label }}" name="{{ form.first_name.name }}" placeholder="Prénom" value="{{ form.first_name.value|default:'' }}" required>
+                                    <label for="{{ form.first_name.id_for_label }}">
+                                        <i class="bi bi-fonts me-1"></i>
+                                        Prénom *
+                                    </label>
+                                    {% if form.first_name.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.first_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" class="form-control {{ form.phone.errors|yesno:'is-invalid,' }}" id="{{ form.phone.id_for_label }}" name="{{ form.phone.name }}" placeholder="+225 XX XX XX XX" value="{{ form.phone.value|default:'' }}" required>
+                                    <label for="{{ form.phone.id_for_label }}">
+                                        <i class="bi bi-telephone me-1"></i>
+                                        Téléphone *
+                                    </label>
+                                    {% if form.phone.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.phone.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control {{ form.email.errors|yesno:'is-invalid,' }}" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" placeholder="professeur@email.com" value="{{ form.email.value|default:'' }}" required>
+                                    <label for="{{ form.email.id_for_label }}">
+                                        <i class="bi bi-envelope me-1"></i>
+                                        Email *
+                                    </label>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.email.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Qualifications -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-mortarboard text-success me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Qualifications pédagogiques</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.specialty.errors|yesno:'is-invalid,' }}" id="{{ form.specialty.id_for_label }}" name="{{ form.specialty.name }}" required>
+                                        <option value="">Choisir une spécialité...</option>
+                                        <option value="mathematiques" {% if form.specialty.value == 'mathematiques' %}selected{% endif %}>Mathématiques</option>
+                                        <option value="francais" {% if form.specialty.value == 'francais' %}selected{% endif %}>Français</option>
+                                        <option value="histoire" {% if form.specialty.value == 'histoire' %}selected{% endif %}>Histoire-Géographie</option>
+                                        <option value="sciences" {% if form.specialty.value == 'sciences' %}selected{% endif %}>Sciences de la Vie et de la Terre</option>
+                                        <option value="physique" {% if form.specialty.value == 'physique' %}selected{% endif %}>Physique-Chimie</option>
+                                        <option value="anglais" {% if form.specialty.value == 'anglais' %}selected{% endif %}>Anglais</option>
+                                        <option value="education_civique" {% if form.specialty.value == 'education_civique' %}selected{% endif %}>Éducation Civique</option>
+                                        <option value="arts_plastiques" {% if form.specialty.value == 'arts_plastiques' %}selected{% endif %}>Arts Plastiques</option>
+                                        <option value="musique" {% if form.specialty.value == 'musique' %}selected{% endif %}>Éducation Musicale</option>
+                                        <option value="eps" {% if form.specialty.value == 'eps' %}selected{% endif %}>Éducation Physique</option>
+                                    </select>
+                                    <label for="{{ form.specialty.id_for_label }}">
+                                        <i class="bi bi-book me-1"></i>
+                                        Spécialité *
+                                    </label>
+                                    {% if form.specialty.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.specialty.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.status.errors|yesno:'is-invalid,' }}" id="{{ form.status.id_for_label }}" name="{{ form.status.name }}" required>
+                                        <option value="">Choisir...</option>
+                                        <option value="active" {% if form.status.value == 'active' %}selected{% endif %}>Actif</option>
+                                        <option value="inactive" {% if form.status.value == 'inactive' %}selected{% endif %}>Inactif</option>
+                                    </select>
+                                    <label for="{{ form.status.id_for_label }}">
+                                        <i class="bi bi-toggle-on me-1"></i>
+                                        Statut *
+                                    </label>
+                                    {% if form.status.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.status.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Card Footer with Actions -->
+                    <div class="card-footer bg-light border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <i class="bi bi-info-circle me-1"></i>
+                                * Champs obligatoires
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'core:teachers_management' %}" class="btn btn-outline-secondary px-4">
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    Annuler
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

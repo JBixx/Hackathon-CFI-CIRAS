@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestion des Années Scolaires - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Gestion des Années Scolaires{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-1">Années scolaires</h4>
+                <p class="text-muted mb-0">Organisation temporelle de l'établissement</p>
+            </div>
+            <a href="{% url 'core:add_school_year' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>
+                Nouvelle année scolaire
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-primary mb-2">
+                    <i class="bi bi-calendar-check-fill" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">{{ total_years }}</h4>
+                <small class="text-muted">Années enregistrées</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-success mb-2">
+                    <i class="bi bi-check-circle-fill" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">{% if active_year_exists %}1{% else %}0{% endif %}</h4>
+                <small class="text-muted">Année active</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-info mb-2">
+                    <i class="bi bi-house-door-fill" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">{{ total_classes }}</h4>
+                <small class="text-muted">Classes actives</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-warning mb-2">
+                    <i class="bi bi-people-fill" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">{{ total_students }}</h4>
+                <small class="text-muted">Élèves inscrits</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- School Years Table -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-light border-0">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Liste des années scolaires</h5>
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control form-control-sm" placeholder="Rechercher..." style="width: 200px;">
+                <select class="form-select form-select-sm" style="width: 120px;">
+                    <option>Tous statuts</option>
+                    <option>Active</option>
+                    <option>Clôturée</option>
+                    <option>Planifiée</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="border-0 fw-semibold">Année scolaire</th>
+                        <th class="border-0 fw-semibold">Période</th>
+                        <th class="border-0 fw-semibold">Statut</th>
+                        <th class="border-0 fw-semibold">Classes</th>
+                        <th class="border-0 fw-semibold">Élèves</th>
+                        <th class="border-0 fw-semibold">Trimestres</th>
+                        <th class="border-0 fw-semibold text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for year in school_years %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                    <i class="bi bi-calendar3 text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">{{ year.name }}</div>
+                                    {% if year.is_active %}
+                                        <small class="text-success fw-semibold">Année en cours</small>
+                                    {% else %}
+                                        <small class="text-muted">Année {{ year.status|title }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-sm">
+                                <div><i class="bi bi-calendar-event me-1"></i>{{ year.start_date|date:"d/m/Y" }}</div>
+                                <div class="text-muted"><i class="bi bi-arrow-right me-1"></i>{{ year.end_date|date:"d/m/Y" }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            {% if year.status == 'active' %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle me-1"></i>Active
+                                </span>
+                            {% elif year.status == 'closed' %}
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-lock me-1"></i>Clôturée
+                                </span>
+                            {% else %}
+                                <span class="badge bg-info">
+                                    <i class="bi bi-clock me-1"></i>Planifiée
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-primary me-2">{{ year.classes_count }}</span>
+                                <small class="text-muted">classes</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-info me-2">{{ year.students_count }}</span>
+                                <small class="text-muted">élèves</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-success me-2">{{ year.terms_count }}</span>
+                                <small class="text-muted">trimestres</small>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                {% if year.status == 'active' %}
+                                    <button class="btn btn-sm btn-outline-info" title="Voir les détails">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning" title="Modifier" disabled>
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                {% elif year.status == 'planned' %}
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Activer cette année scolaire ?')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="activate">
+                                        <input type="hidden" name="year_name" value="{{ year.name }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-success" title="Activer">
+                                            <i class="bi bi-play-circle"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-sm btn-outline-warning" title="Modifier">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-outline-info" title="Voir les détails">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" title="Modifier" disabled>
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                {% endif %}
+                                {% if year.status == 'active' %}
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Clôturer cette année scolaire ? Cette action est irréversible.')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="close">
+                                        <input type="hidden" name="year_name" value="{{ year.name }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Clôturer">
+                                            <i class="bi bi-lock"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-light border-0">
+        <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+                Affichage de {{ school_years|length }} années sur {{ school_years|length }} au total
+            </small>
+            <nav aria-label="School years pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Précédent</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Create Year Modal -->
+<div class="modal fade" id="createYearModal" tabindex="-1" aria-labelledby="createYearModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createYearModalLabel">Nouvelle année scolaire</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="new_year_name" class="form-label">Nom de l'année *</label>
+                            <input type="text" class="form-control" id="new_year_name" name="new_year_name"
+                                   placeholder="Ex: 2025-2026" required>
+                            <div class="form-text">Format: AAAA-AAAA (ex: 2025-2026)</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="start_date" class="form-label">Date de début *</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                            <div class="form-text">Généralement début septembre</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="end_date" class="form-label">Date de fin *</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                            <div class="form-text">Généralement fin juin ou début juillet</div>
+                        </div>
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Important :</strong> Seule une année scolaire peut être active à la fois.
+                                L'activation de cette nouvelle année désactivera automatiquement l'année actuelle.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-2"></i>Créer l'année scolaire
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

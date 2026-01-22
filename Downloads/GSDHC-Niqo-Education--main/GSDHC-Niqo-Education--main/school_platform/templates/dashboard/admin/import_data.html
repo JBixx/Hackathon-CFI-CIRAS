@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-upload me-2"></i>
+                    {{ page_title }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Fonctionnalité en cours de développement. L'import Excel sera disponible prochainement.
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6>Importation de données :</h6>
+                        <form method="post" enctype="multipart/form-data" class="mt-3">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="excel_file" class="form-label">Fichier Excel</label>
+                                <input type="file" class="form-control" id="excel_file" name="excel_file"
+                                       accept=".xlsx,.xls" disabled>
+                                <small class="form-text text-muted">
+                                    Formats acceptés : .xlsx, .xls (Microsoft Excel)
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="overwrite" name="overwrite" disabled>
+                                    <label class="form-check-label" for="overwrite">
+                                        Écraser les données existantes
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted">
+                                    Si coché, les données existantes seront remplacées
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="validate_only" name="validate_only" disabled>
+                                    <label class="form-check-label" for="validate_only">
+                                        Validation uniquement
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted">
+                                    Si coché, seules les validations seront effectuées sans import
+                                </small>
+                            </div>
+
+                            <button type="submit" class="btn btn-success" disabled>
+                                <i class="bi bi-upload me-2"></i>
+                                Lancer l'importation
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h6>Informations importantes :</h6>
+                        <div class="mt-3">
+                            <div class="alert alert-warning">
+                                <h6><i class="bi bi-exclamation-triangle text-warning me-2"></i>Format requis</h6>
+                                <p class="mb-1">
+                                    Le fichier Excel doit respecter la structure suivante :
+                                </p>
+                                <ul class="mb-0 small">
+                                    {% if import_type == 'students' %}
+                                        <li>Colonne A : Matricule</li>
+                                        <li>Colonne B : Prénom</li>
+                                        <li>Colonne C : Nom</li>
+                                        <li>Colonne D : Genre (M/F)</li>
+                                        <li>Colonne E : Date de naissance</li>
+                                        <li>Colonne F : Classe</li>
+                                    {% elif import_type == 'teachers' %}
+                                        <li>Colonne A : Matricule</li>
+                                        <li>Colonne B : Prénom</li>
+                                        <li>Colonne C : Nom</li>
+                                        <li>Colonne D : Email</li>
+                                        <li>Colonne E : Téléphone</li>
+                                        <li>Colonne F : Matières</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+
+                            <div class="alert alert-light">
+                                <h6><i class="bi bi-file-earmark-excel text-success me-2"></i>Modèle Excel</h6>
+                                <p class="mb-0">
+                                    <a href="#" class="btn btn-sm btn-outline-primary" disabled>
+                                        <i class="bi bi-download me-1"></i>
+                                        Télécharger le modèle
+                                    </a>
+                                </p>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <h6><i class="bi bi-clock text-info me-2"></i>État du développement</h6>
+                                <p class="mb-0 small">
+                                    Cette interface est préparée pour l'implémentation future.
+                                    L'import Excel utilisant openpyxl sera ajouté prochainement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

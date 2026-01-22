@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ajouter un Trimestre - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Ajouter un Trimestre{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'core:terms_management' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" style="min-height: 70vh;">
+            <div class="card-header bg-light border-0">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-calendar-plus text-primary me-3" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h5 class="mb-0">Nouveau trimestre</h5>
+                        <small class="text-muted">Configuration d'une période d'évaluation</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Section: Informations générales -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-info-circle text-primary me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Informations générales</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.school_year.errors|yesno:'is-invalid,' }}" id="{{ form.school_year.id_for_label }}" name="{{ form.school_year.name }}" required>
+                                        <option value="">Choisir une année scolaire...</option>
+                                        {% for year in school_years %}
+                                            <option value="{{ year.pk }}" {% if form.school_year.value == year.pk|stringformat:"s" %}selected{% endif %}>
+                                                {{ year.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="{{ form.school_year.id_for_label }}">
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        Année scolaire *
+                                    </label>
+                                    {% if form.school_year.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.school_year.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.name.errors|yesno:'is-invalid,' }}" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" required>
+                                        <option value="">Choisir un trimestre...</option>
+                                        <option value="1" {% if form.name.value == '1' %}selected{% endif %}>1er Trimestre</option>
+                                        <option value="2" {% if form.name.value == '2' %}selected{% endif %}>2ème Trimestre</option>
+                                        <option value="3" {% if form.name.value == '3' %}selected{% endif %}>3ème Trimestre</option>
+                                    </select>
+                                    <label for="{{ form.name.id_for_label }}">
+                                        <i class="bi bi-calendar-range me-1"></i>
+                                        Trimestre *
+                                    </label>
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control {{ form.start_date.errors|yesno:'is-invalid,' }}" id="{{ form.start_date.id_for_label }}" name="{{ form.start_date.name }}" value="{{ form.start_date.value|default:'' }}" required>
+                                    <label for="{{ form.start_date.id_for_label }}">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        Date de début *
+                                    </label>
+                                    {% if form.start_date.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.start_date.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control {{ form.end_date.errors|yesno:'is-invalid,' }}" id="{{ form.end_date.id_for_label }}" name="{{ form.end_date.name }}" value="{{ form.end_date.value|default:'' }}" required>
+                                    <label for="{{ form.end_date.id_for_label }}">
+                                        <i class="bi bi-calendar-check me-1"></i>
+                                        Date de fin *
+                                    </label>
+                                    {% if form.end_date.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.end_date.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Card Footer with Actions -->
+                    <div class="card-footer bg-light border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <i class="bi bi-info-circle me-1"></i>
+                                * Champs obligatoires
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'core:terms_management' %}" class="btn btn-outline-secondary px-4">
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    Annuler
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

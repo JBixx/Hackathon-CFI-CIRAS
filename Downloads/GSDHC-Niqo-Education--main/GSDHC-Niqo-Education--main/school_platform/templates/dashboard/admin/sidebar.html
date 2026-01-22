@@ -1,0 +1,120 @@
+<!-- Sidebar Navigation -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <a href="{% url 'core:admin_dashboard' %}" class="sidebar-brand">
+            <i class="bi bi-building"></i>
+            <span>GSDHC</span>
+        </a>
+    </div>
+
+    <nav class="sidebar-nav">
+        <!-- Main Navigation -->
+        <div class="nav-section">
+            <div class="nav-section-label">Principal</div>
+            <a href="{% url 'core:admin_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+        </div>
+
+        <!-- Academic Management -->
+        <div class="nav-section">
+            <div class="nav-section-label">Gestion académique</div>
+            <a href="{% url 'core:levels_management' %}" class="nav-link {% if request.resolver_match.url_name == 'levels_management' %}active{% endif %}">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Niveaux</span>
+            </a>
+            <a href="{% url 'core:classes_management' %}" class="nav-link {% if request.resolver_match.url_name == 'classes_management' %}active{% endif %}">
+                <i class="bi bi-house-door"></i>
+                <span>Classes</span>
+            </a>
+            <a href="{% url 'core:students_management' %}" class="nav-link {% if request.resolver_match.url_name == 'students_management' %}active{% endif %}">
+                <i class="bi bi-people"></i>
+                <span>Élèves</span>
+            </a>
+            <a href="{% url 'core:teachers_management' %}" class="nav-link {% if request.resolver_match.url_name == 'teachers_management' %}active{% endif %}">
+                <i class="bi bi-person-badge"></i>
+                <span>Professeurs</span>
+            </a>
+            <a href="{% url 'core:subjects_management' %}" class="nav-link {% if request.resolver_match.url_name == 'subjects_management' %}active{% endif %}">
+                <i class="bi bi-book"></i>
+                <span>Matières</span>
+            </a>
+        </div>
+
+                <!-- Organization -->
+                <div class="nav-section">
+                    <div class="nav-section-label">Organisation scolaire</div>
+            <a href="{% url 'core:school_years_management' %}" class="nav-link {% if request.resolver_match.url_name == 'school_years_management' %}active{% endif %}">
+                <i class="bi bi-calendar3"></i>
+                <span>Années scolaires</span>
+            </a>
+            <a href="{% url 'core:terms_management' %}" class="nav-link {% if request.resolver_match.url_name == 'terms_management' %}active{% endif %}">
+                <i class="bi bi-calendar-event"></i>
+                <span>Trimestres</span>
+            </a>
+                </div>
+
+        <!-- Reports -->
+        <div class="nav-section">
+            <div class="nav-section-label">Bulletins</div>
+            <a href="{% url 'core:report_templates' %}" class="nav-link {% if request.resolver_match.url_name == 'report_templates' %}active{% endif %}">
+                <i class="bi bi-file-earmark-text"></i>
+                <span>Templates de bulletins</span>
+            </a>
+            <a href="{% url 'core:generate_term_reports' %}" class="nav-link {% if request.resolver_match.url_name == 'generate_term_reports' %}active{% endif %}">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>Générer bulletins trimestriels</span>
+            </a>
+            <a href="{% url 'core:generate_annual_reports' %}" class="nav-link {% if request.resolver_match.url_name == 'generate_annual_reports' %}active{% endif %}">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>Générer bulletins annuels</span>
+            </a>
+        </div>
+
+        <!-- Users -->
+        <div class="nav-section">
+            <div class="nav-section-label">Utilisateurs</div>
+            <a href="{% url 'core:teacher_accounts_management' %}" class="nav-link {% if request.resolver_match.url_name == 'teacher_accounts_management' %}active{% endif %}">
+                <i class="bi bi-person-gear"></i>
+                <span>Comptes professeurs principaux</span>
+            </a>
+        </div>
+
+        <!-- Import/Export -->
+        <div class="nav-section">
+            <div class="nav-section-label">Import / Export</div>
+            <a href="{% url 'core:import_students' %}" class="nav-link {% if request.resolver_match.url_name == 'import_students' %}active{% endif %}">
+                <i class="bi bi-file-earmark-excel"></i>
+                <span>Import élèves</span>
+            </a>
+            <a href="{% url 'core:import_teachers' %}" class="nav-link {% if request.resolver_match.url_name == 'import_teachers' %}active{% endif %}">
+                <i class="bi bi-file-earmark-excel"></i>
+                <span>Import professeurs</span>
+            </a>
+        </div>
+    </nav>
+</aside>
+
+<script>
+// Gestion de la position de scroll dans la sidebar
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar-nav');
+
+    // Restaurer la position de scroll sauvegardée
+    const savedScrollPosition = localStorage.getItem('sidebarScrollPosition');
+    if (savedScrollPosition) {
+        sidebar.scrollTop = parseInt(savedScrollPosition, 10);
+    }
+
+    // Sauvegarder la position de scroll à chaque scroll
+    sidebar.addEventListener('scroll', function() {
+        localStorage.setItem('sidebarScrollPosition', sidebar.scrollTop);
+    });
+
+    // Sauvegarder la position avant de quitter la page
+    window.addEventListener('beforeunload', function() {
+        localStorage.setItem('sidebarScrollPosition', sidebar.scrollTop);
+    });
+});
+</script>

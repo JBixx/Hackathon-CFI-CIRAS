@@ -1,0 +1,118 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Import Professeurs - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Import Professeurs{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="text-center">
+            <h4 class="mb-1">Importation des données professeurs</h4>
+        </div>
+    </div>
+</div>
+
+<!-- Import Section -->
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light border-0">
+                <h5 class="mb-0">
+                    <i class="bi bi-file-earmark-excel text-success me-2"></i>
+                    Importation des données professeurs
+                </h5>
+            </div>
+            <div class="card-body p-2">
+                <div class="text-center mb-1">
+                    <i class="bi bi-cloud-upload text-primary" style="font-size: 3rem;"></i>
+                    <h4 class="mt-2 mb-1">Importez vos données professeurs</h4>
+                    <p class="text-muted small">Sélectionnez un fichier Excel contenant les informations des professeurs</p>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="text-center">
+                    {% csrf_token %}
+
+                    <!-- File Upload Area -->
+                    <div class="mb-2">
+                        <div class="border-2 border-dashed border-primary rounded p-3 mb-2" style="border-style: dashed !important;">
+                            <input type="file" class="form-control d-none" id="excelFile" name="excel_file" accept=".xlsx,.xls" required>
+                            <label for="excelFile" class="cursor-pointer">
+                                <i class="bi bi-file-earmark-excel text-success" style="font-size: 2.5rem;"></i>
+                                <p class="mt-1 mb-1 fw-semibold">Cliquez pour sélectionner un fichier</p>
+                                <p class="text-muted small mb-0">Formats acceptés : .xlsx, .xls (Maximum 10MB)</p>
+                            </label>
+                        </div>
+                        <div id="fileInfo" class="text-muted small mb-2" style="display: none;">
+                            Fichier sélectionné : <span id="fileName"></span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="bi bi-upload me-2"></i>
+                            Importer
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary px-4" onclick="clearFile()">
+                            <i class="bi bi-x-circle me-2"></i>
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Clear file input
+function clearFile() {
+    document.getElementById('excelFile').value = '';
+    document.getElementById('fileInfo').style.display = 'none';
+}
+
+// File validation and display
+document.getElementById('excelFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const fileInfo = document.getElementById('fileInfo');
+    const fileName = document.getElementById('fileName');
+
+    if (file) {
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        const allowedTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
+
+        if (file.size > maxSize) {
+            alert('Le fichier ne doit pas dépasser 10MB.');
+            this.value = '';
+            fileInfo.style.display = 'none';
+            return;
+        }
+
+        if (!allowedTypes.includes(file.type) && !file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
+            alert('Veuillez sélectionner un fichier Excel (.xlsx ou .xls).');
+            this.value = '';
+            fileInfo.style.display = 'none';
+            return;
+        }
+
+        // Afficher le nom du fichier
+        fileName.textContent = file.name;
+        fileInfo.style.display = 'block';
+    } else {
+        fileInfo.style.display = 'none';
+    }
+});
+
+// Auto-create accounts warning
+document.getElementById('createAccounts').addEventListener('change', function(e) {
+    if (this.checked) {
+        if (!confirm('Attention : Cette option créera automatiquement des comptes utilisateur pour tous les professeurs importés. Les mots de passe temporaires seront générés. Continuer ?')) {
+            this.checked = false;
+        }
+    }
+});
+</script>
+{% endblock %}

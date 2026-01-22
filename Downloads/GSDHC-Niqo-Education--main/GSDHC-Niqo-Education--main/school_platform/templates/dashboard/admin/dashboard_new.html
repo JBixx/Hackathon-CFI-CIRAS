@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Administrateur - GSDHC Platform{% endblock %}
+
+{% block page_title %}Dashboard Administrateur{% endblock %}
+
+{% block content %}
+<!-- Welcome Header -->
+<div class="welcome-header">
+    <div class="welcome-stats">
+        <h1 class="welcome-title">Bienvenue, {{ user.get_full_name|default:user.username }}</h1>
+        <p class="welcome-subtitle">Plateforme de gestion scolaire GSDHC - Vue d'ensemble de votre établissement</p>
+
+        <div class="welcome-stats" style="margin-top: 32px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px;">
+                <i class="bi bi-calendar-event"></i>
+                <span style="font-weight: 500;">Année scolaire {{ current_school_year|default:"2024-2025" }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="stats-grid">
+    <div class="card stats-card">
+        <div class="stats-card-body">
+            <div class="stats-icon">
+                <i class="bi bi-people"></i>
+            </div>
+            <div class="stats-value">{{ stats.total_students|default:"0" }}</div>
+            <div class="stats-label">Élèves inscrits</div>
+        </div>
+    </div>
+
+    <div class="card stats-card">
+        <div class="stats-card-body">
+            <div class="stats-icon">
+                <i class="bi bi-house-door"></i>
+            </div>
+            <div class="stats-value">{{ stats.total_classes|default:"0" }}</div>
+            <div class="stats-label">Classes actives</div>
+        </div>
+    </div>
+
+    <div class="card stats-card">
+        <div class="stats-card-body">
+            <div class="stats-icon">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <div class="stats-value">{{ stats.total_teachers|default:"0" }}</div>
+            <div class="stats-label">Professeurs</div>
+        </div>
+    </div>
+
+    <div class="card stats-card">
+        <div class="stats-card-body">
+            <div class="stats-icon">
+                <i class="bi bi-book"></i>
+            </div>
+            <div class="stats-value">{{ stats.total_subjects|default:"0" }}</div>
+            <div class="stats-label">Matières</div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="section-header">
+    <h2 class="section-title">Actions rapides</h2>
+    <p class="section-subtitle">Accès direct aux fonctionnalités principales de gestion</p>
+</div>
+
+<div class="action-grid">
+    <!-- Academic Management -->
+    <div class="action-card">
+        <div class="action-card-header">
+            <div class="action-icon">
+                <i class="bi bi-building"></i>
+            </div>
+            <div>
+                <h3 class="action-title">Gestion académique</h3>
+                <p class="action-subtitle">Structure et organisation scolaire</p>
+            </div>
+        </div>
+        <div class="action-card-body">
+            <div class="action-list">
+                <a href="#" class="action-item">
+                    <i class="bi bi-bar-chart-line"></i>
+                    <span>Gérer les niveaux</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="bi bi-house-door"></i>
+                    <span>Gérer les classes</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="bi bi-people"></i>
+                    <span>Gérer les élèves</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="bi bi-person-badge"></i>
+                    <span>Gérer les professeurs</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="bi bi-book"></i>
+                    <span>Gérer les matières</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grades & Reports -->
+    <div class="action-card">
+        <div class="action-card-header">
+            <div class="action-icon" style="background-color: var(--success-green);">
+                <i class="bi bi-graph-up"></i>
+            </div>
+            <div>
+                <h3 class="action-title">Notes & Bulletins</h3>
+                <p class="action-subtitle">Évaluation et génération de rapports</p>
+            </div>
+        </div>
+        <div class="action-card-body">
+            <div class="action-list">
+                <a href="#" class="action-item">
+                    <i class="bi bi-calendar3"></i>
+                    <span>Configurer les périodes</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Saisir les notes</span>
+                </a>
+                <a href="{% url 'core:generate_term_reports' %}" class="action-item">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <span>Bulletins trimestriels</span>
+                </a>
+                <a href="{% url 'core:generate_annual_reports' %}" class="action-item">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <span>Bulletins annuels</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import & Export -->
+    <div class="action-card">
+        <div class="action-card-header">
+            <div class="action-icon" style="background-color: var(--primary-blue-light);">
+                <i class="bi bi-file-earmark-excel"></i>
+            </div>
+            <div>
+                <h3 class="action-title">Import/Export</h3>
+                <p class="action-subtitle">Gestion des données en masse</p>
+            </div>
+        </div>
+        <div class="action-card-body">
+            <div class="action-list">
+                <a href="{% url 'core:import_students' %}" class="action-item">
+                    <i class="bi bi-upload"></i>
+                    <span>Importer élèves</span>
+                </a>
+                <a href="{% url 'core:import_teachers' %}" class="action-item">
+                    <i class="bi bi-upload"></i>
+                    <span>Importer professeurs</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="bi bi-download"></i>
+                    <span>Exporter données</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                    <span>Modèles Excel</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Status -->
+<div class="section-header">
+    <h2 class="section-title">État du système</h2>
+    <p class="section-subtitle">Statut des composants et fonctionnalités</p>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="status-grid">
+            <div class="status-item">
+                <div class="status-icon success">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="status-text">
+                    <h6>Base de données</h6>
+                    <small>SQLite opérationnel</small>
+                </div>
+            </div>
+
+            <div class="status-item">
+                <div class="status-icon success">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="status-text">
+                    <h6>Authentification</h6>
+                    <small>Système actif</small>
+                </div>
+            </div>
+
+            <div class="status-item">
+                <div class="status-icon warning">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <div class="status-text">
+                    <h6>Modèles métier</h6>
+                    <small>En développement</small>
+                </div>
+            </div>
+
+            <div class="status-item">
+                <div class="status-icon warning">
+                    <i class="bi bi-clock"></i>
+                </div>
+                <div class="status-text">
+                    <h6>Génération PDF</h6>
+                    <small>À implémenter</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

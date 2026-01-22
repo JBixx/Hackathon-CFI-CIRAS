@@ -1,0 +1,346 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestion des Trimestres - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Gestion des Trimestres{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-1">Trimestres scolaires</h4>
+                <p class="text-muted mb-0">Organisation des périodes d'évaluation</p>
+            </div>
+            <div class="d-flex gap-2">
+                <select class="form-select" id="yearSelector" onchange="changeYear(this.value)" style="width: 200px;">
+                    {% for year in school_years %}
+                        <option value="{{ year.pk }}" {% if current_school_year and year.pk == current_school_year.pk %}selected{% endif %}>
+                            Année {{ year.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if current_school_year %}
+                <a href="{% url 'core:add_term' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Nouveau trimestre
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Current Year Info -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded me-4">
+                        <i class="bi bi-calendar3 text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <div>
+                        {% if current_school_year %}
+                        <h5 class="mb-1">Année scolaire {{ current_school_year.name }}</h5>
+                        <p class="text-muted mb-0">
+                            {% for term in terms %}
+                                {% if term.is_active and not term.is_closed %}
+                                    Trimestre {{ term.get_name_display }} en cours
+                                {% endif %}
+                            {% empty %}
+                                Aucun trimestre actif
+                            {% endfor %}
+                        {% else %}
+                        <h5 class="mb-1">Aucune année sélectionnée</h5>
+                        <p class="text-muted mb-0">Veuillez sélectionner une année scolaire</p>
+                        {% endif %}
+                        </p>
+                    </div>
+                    <div class="ms-auto">
+                        <span class="badge bg-primary fs-6">{{ terms|length }} trimestre{{ terms|length|pluralize }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-primary mb-2">
+                    <i class="bi bi-calendar-event-fill" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">{{ total_terms }}</h4>
+                <small class="text-muted">Trimestres créés</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-success mb-2">
+                    <i class="bi bi-check-circle-fill" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">{% if active_term_exists %}1{% else %}0{% endif %}</h4>
+                <small class="text-muted">Trimestre actif</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-info mb-2">
+                    <i class="bi bi-file-earmark-pdf" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">0</h4>
+                <small class="text-muted">Bulletins générés</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-warning mb-2">
+                    <i class="bi bi-graph-up" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="mb-1">N/A</h4>
+                <small class="text-muted">Moyenne générale</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms Table -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-light border-0">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Trimestres de l'année {{ selected_year }}</h5>
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control form-control-sm" placeholder="Rechercher..." style="width: 200px;">
+                <select class="form-select form-select-sm" style="width: 120px;">
+                    <option>Tous statuts</option>
+                    <option>Actif</option>
+                    <option>Clôturé</option>
+                    <option>À venir</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="border-0 fw-semibold">Trimestre</th>
+                        <th class="border-0 fw-semibold">Période</th>
+                        <th class="border-0 fw-semibold">Statut</th>
+                        <th class="border-0 fw-semibold">Bulletins</th>
+                        <th class="border-0 fw-semibold">Moyenne</th>
+                        <th class="border-0 fw-semibold">Progression</th>
+                        <th class="border-0 fw-semibold text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for term in terms %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                    <i class="bi bi-calendar-event text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">{{ term.full_name }}</div>
+                                    <small class="text-muted">{{ term.name }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-sm">
+                                <div><i class="bi bi-calendar-event me-1"></i>{{ term.start_date|date:"d/m/Y" }}</div>
+                                <div class="text-muted"><i class="bi bi-arrow-right me-1"></i>{{ term.end_date|date:"d/m/Y" }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            {% if term.status == 'active' %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-play-circle me-1"></i>Actif
+                                </span>
+                            {% elif term.status == 'closed' %}
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-lock me-1"></i>Clôturé
+                                </span>
+                            {% else %}
+                                <span class="badge bg-info">
+                                    <i class="bi bi-clock me-1"></i>À venir
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-info me-2">{{ term.reports_count }}</span>
+                                <small class="text-muted">générés</small>
+                            </div>
+                        </td>
+                        <td>
+                            {% if term.avg_grade > 0 %}
+                                <div class="d-flex align-items-center">
+                                    <span class="fw-semibold me-2">{{ term.avg_grade|floatformat:1 }}/20</span>
+                                    <small class="text-muted">moyenne</small>
+                                </div>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if term.status == 'active' %}
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-fill me-2" style="height: 6px; width: 80px;">
+                                        <div class="progress-bar bg-success" style="width: 65%"></div>
+                                    </div>
+                                    <small class="text-muted">65%</small>
+                                </div>
+                            {% elif term.status == 'closed' %}
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-fill me-2" style="height: 6px; width: 80px;">
+                                        <div class="progress-bar bg-secondary" style="width: 100%"></div>
+                                    </div>
+                                    <small class="text-muted">100%</small>
+                                </div>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                {% if term.status == 'active' %}
+                                    <button class="btn btn-sm btn-outline-info" title="Voir les bulletins">
+                                        <i class="bi bi-file-earmark-pdf"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning" title="Voir les notes">
+                                        <i class="bi bi-graph-up"></i>
+                                    </button>
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Clôturer ce trimestre ? Cette action est irréversible.')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="close">
+                                        <input type="hidden" name="term_name" value="{{ term.name }}">
+                                        <input type="hidden" name="year" value="{{ selected_year }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Clôturer">
+                                            <i class="bi bi-lock"></i>
+                                        </button>
+                                    </form>
+                                {% elif term.status == 'closed' %}
+                                    <button class="btn btn-sm btn-outline-info" title="Voir les bulletins">
+                                        <i class="bi bi-file-earmark-pdf"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" title="Voir les notes" disabled>
+                                        <i class="bi bi-graph-up"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" title="Modifier" disabled>
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-outline-warning" title="Modifier">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-light border-0">
+        <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+                Affichage de {{ terms|length }} trimestre{{ terms|length|pluralize }} pour l'année {{ selected_year }}
+            </small>
+            <nav aria-label="Terms pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Précédent</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Create Term Modal -->
+<div class="modal fade" id="createTermModal" tabindex="-1" aria-labelledby="createTermModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTermModalLabel">Nouveau trimestre</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+                <input type="hidden" name="year" value="{{ selected_year }}">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="term_type" class="form-label">Type de trimestre *</label>
+                            <select class="form-select" id="term_type" name="term_type" required>
+                                <option value="">Choisir...</option>
+                                <option value="T1">Trimestre 1</option>
+                                <option value="T2">Trimestre 2</option>
+                                <option value="T3">Trimestre 3</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="term_start_date" class="form-label">Date de début *</label>
+                            <input type="date" class="form-control" id="term_start_date" name="start_date" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="term_end_date" class="form-label">Date de fin *</label>
+                            <input type="date" class="form-control" id="term_end_date" name="end_date" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                <strong>Attention :</strong> Les dates ne doivent pas se chevaucher avec d'autres trimestres de la même année.
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Conseil :</strong> Un trimestre dure généralement 10-12 semaines selon le calendrier scolaire.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-2"></i>Créer le trimestre
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function changeYear(year) {
+    window.location.href = '?year=' + year;
+}
+</script>
+
+{% endblock %}

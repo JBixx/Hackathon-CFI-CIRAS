@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ajouter une Matière - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Ajouter une Matière{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'core:subjects_management' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" style="min-height: 70vh;">
+            <div class="card-header bg-light border-0">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-book text-primary me-3" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h5 class="mb-0">Nouvelle matière</h5>
+                        <small class="text-muted">Configuration de la matière d'enseignement</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Section: Informations de base -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-info-circle text-primary me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Informations de base</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control {{ form.name.errors|yesno:'is-invalid,' }}" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" placeholder="Nom de la matière" value="{{ form.name.value|default:'' }}" required>
+                                    <label for="{{ form.name.id_for_label }}">
+                                        <i class="bi bi-fonts me-1"></i>
+                                        Nom de la matière *
+                                    </label>
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control {{ form.code.errors|yesno:'is-invalid,' }}" id="{{ form.code.id_for_label }}" name="{{ form.code.name }}" placeholder="MATH" value="{{ form.code.value|default:'' }}" maxlength="10" required style="text-transform: uppercase;">
+                                    <label for="{{ form.code.id_for_label }}">
+                                        <i class="bi bi-upc me-1"></i>
+                                        Code *
+                                    </label>
+                                    {% if form.code.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.code.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control {{ form.coefficient.errors|yesno:'is-invalid,' }}" id="{{ form.coefficient.id_for_label }}" name="{{ form.coefficient.name }}" placeholder="2" value="{{ form.coefficient.value|default:'1' }}" min="1" max="10" required>
+                                    <label for="{{ form.coefficient.id_for_label }}">
+                                        <i class="bi bi-calculator me-1"></i>
+                                        Coefficient *
+                                    </label>
+                                    {% if form.coefficient.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.coefficient.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="{{ form.description.id_for_label }}" name="{{ form.description.name }}" placeholder="Description de la matière" rows="3" style="min-height: 80px;">{{ form.description.value|default:'' }}</textarea>
+                                    <label for="{{ form.description.id_for_label }}">
+                                        <i class="bi bi-textarea-resize me-1"></i>
+                                        Description (optionnel)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Card Footer with Actions -->
+                    <div class="card-footer bg-light border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <i class="bi bi-info-circle me-1"></i>
+                                * Champs obligatoires
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'core:subjects_management' %}" class="btn btn-outline-secondary px-4">
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    Annuler
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

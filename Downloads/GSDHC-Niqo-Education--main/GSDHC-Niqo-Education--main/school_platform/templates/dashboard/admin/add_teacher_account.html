@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ajouter un Compte Professeur - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Ajouter un Compte Professeur{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-1">Ajouter un compte professeur</h4>
+                <p class="text-muted mb-0">Créer un compte utilisateur pour un professeur</p>
+            </div>
+            <a href="{% url 'core:teacher_accounts_management' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" style="min-height: 70vh;">
+            <div class="card-header bg-light border-0">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-plus-fill text-primary me-3" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h5 class="mb-0">Nouveau compte professeur</h5>
+                        <small class="text-muted">Configuration d'accès pour le personnel enseignant</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Section: Sélection du professeur -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-person-badge text-primary me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Sélection du professeur</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.teacher.errors|yesno:'is-invalid,' }}" id="{{ form.teacher.id_for_label }}" name="{{ form.teacher.name }}" required>
+                                        <option value="">Choisir un professeur...</option>
+                                        {% for teacher in teachers %}
+                                            <option value="{{ teacher.pk }}" {% if form.teacher.value == teacher.pk|stringformat:"s" %}selected{% endif %}>
+                                                {{ teacher.first_name }} {{ teacher.last_name }} ({{ teacher.matricule }}) - {{ teacher.get_specialty_display }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="{{ form.teacher.id_for_label }}">
+                                        <i class="bi bi-person-check me-1"></i>
+                                        Professeur *
+                                    </label>
+                                    {% if form.teacher.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.teacher.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Sélectionnez le professeur qui recevra ce compte utilisateur</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Informations du compte -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-shield-lock text-success me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Informations du compte</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control {{ form.username.errors|yesno:'is-invalid,' }}" id="{{ form.username.id_for_label }}" name="{{ form.username.name }}" placeholder="nom.prenom" value="{{ form.username.value|default:'' }}" required>
+                                    <label for="{{ form.username.id_for_label }}">
+                                        <i class="bi bi-at me-1"></i>
+                                        Nom d'utilisateur *
+                                    </label>
+                                    {% if form.username.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.username.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Format recommandé : prenom.nom</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control {{ form.email.errors|yesno:'is-invalid,' }}" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" placeholder="professeur@email.com" value="{{ form.email.value|default:'' }}" required>
+                                    <label for="{{ form.email.id_for_label }}">
+                                        <i class="bi bi-envelope me-1"></i>
+                                        Email de récupération *
+                                    </label>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.email.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control {{ form.password.errors|yesno:'is-invalid,' }}" id="{{ form.password.id_for_label }}" name="{{ form.password.name }}" placeholder="Mot de passe temporaire" required>
+                                    <label for="{{ form.password.id_for_label }}">
+                                        <i class="bi bi-key me-1"></i>
+                                        Mot de passe temporaire *
+                                    </label>
+                                    {% if form.password.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.password.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Le professeur devra changer ce mot de passe à la première connexion</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control {{ form.password_confirm.errors|yesno:'is-invalid,' }}" id="{{ form.password_confirm.id_for_label }}" name="{{ form.password_confirm.name }}" placeholder="Confirmer le mot de passe" required>
+                                    <label for="{{ form.password_confirm.id_for_label }}">
+                                        <i class="bi bi-key-fill me-1"></i>
+                                        Confirmer le mot de passe *
+                                    </label>
+                                    {% if form.password_confirm.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.password_confirm.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Rôles et permissions -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-gear text-warning me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Rôles et permissions</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.role.errors|yesno:'is-invalid,' }}" id="{{ form.role.id_for_label }}" name="{{ form.role.name }}" required>
+                                        <option value="">Choisir un rôle...</option>
+                                        <option value="teacher" {% if form.role.value == 'teacher' %}selected{% endif %}>Professeur</option>
+                                        <option value="head_teacher" {% if form.role.value == 'head_teacher' %}selected{% endif %}>Professeur Principal</option>
+                                        <option value="admin" {% if form.role.value == 'admin' %}selected{% endif %}>Administrateur</option>
+                                    </select>
+                                    <label for="{{ form.role.id_for_label }}">
+                                        <i class="bi bi-person-gear me-1"></i>
+                                        Rôle dans le système *
+                                    </label>
+                                    {% if form.role.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.role.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.status.errors|yesno:'is-invalid,' }}" id="{{ form.status.id_for_label }}" name="{{ form.status.name }}" required>
+                                        <option value="">Choisir...</option>
+                                        <option value="active" {% if form.status.value == 'active' %}selected{% endif %}>Actif</option>
+                                        <option value="inactive" {% if form.status.value == 'inactive' %}selected{% endif %}>Inactif</option>
+                                    </select>
+                                    <label for="{{ form.status.id_for_label }}">
+                                        <i class="bi bi-toggle-on me-1"></i>
+                                        Statut du compte *
+                                    </label>
+                                    {% if form.status.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.status.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Card Footer with Actions -->
+                    <div class="card-footer bg-light border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <i class="bi bi-info-circle me-1"></i>
+                                * Champs obligatoires
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'core:teacher_accounts_management' %}" class="btn btn-outline-secondary px-4">
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    Annuler
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Créer le compte
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

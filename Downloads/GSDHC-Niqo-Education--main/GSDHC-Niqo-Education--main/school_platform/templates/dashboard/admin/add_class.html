@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ajouter une Classe - GSDHC Platform{% endblock %}
+
+{% block page_title_main %}Ajouter une Classe{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'core:classes_management' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" style="min-height: 70vh;">
+            <div class="card-header bg-light border-0">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-house-door text-primary me-3" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h5 class="mb-0">Nouvelle classe</h5>
+                        <small class="text-muted">Configuration de la classe d'enseignement</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Section: Informations de base -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-info-circle text-primary me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Informations de base</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control {{ form.name.errors|yesno:'is-invalid,' }}" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" placeholder="Nom de la classe" value="{{ form.name.value|default:'' }}" required>
+                                    <label for="{{ form.name.id_for_label }}">
+                                        <i class="bi bi-tag me-1"></i>
+                                        Nom de la classe *
+                                    </label>
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.level.errors|yesno:'is-invalid,' }}" id="{{ form.level.id_for_label }}" name="{{ form.level.name }}" required>
+                                        <option value="">Choisir un niveau...</option>
+                                        {% for level in levels %}
+                                            <option value="{{ level.pk }}" {% if form.level.value == level.pk|stringformat:"s" %}selected{% endif %}>
+                                                {{ level.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="{{ form.level.id_for_label }}">
+                                        <i class="bi bi-bar-chart-line me-1"></i>
+                                        Niveau d'enseignement *
+                                    </label>
+                                    {% if form.level.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.level.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select {{ form.school_year.errors|yesno:'is-invalid,' }}" id="{{ form.school_year.id_for_label }}" name="{{ form.school_year.name }}" required>
+                                        <option value="">Choisir une année...</option>
+                                        {% for year in school_years %}
+                                            <option value="{{ year.pk }}" {% if form.school_year.value == year.pk|stringformat:"s" %}selected{% endif %}>
+                                                {{ year.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="{{ form.school_year.id_for_label }}">
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        Année scolaire *
+                                    </label>
+                                    {% if form.school_year.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.school_year.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control {{ form.capacity.errors|yesno:'is-invalid,' }}" id="{{ form.capacity.id_for_label }}" name="{{ form.capacity.name }}" placeholder="30" value="{{ form.capacity.value|default:'30' }}" min="1" max="50" required>
+                                    <label for="{{ form.capacity.id_for_label }}">
+                                        <i class="bi bi-people me-1"></i>
+                                        Capacité maximale *
+                                    </label>
+                                    {% if form.capacity.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.capacity.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Assignation -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-person-badge text-success me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Assignation</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <div class="form-floating">
+                                    <select class="form-select" id="{{ form.main_teacher.id_for_label }}" name="{{ form.main_teacher.name }}">
+                                        <option value="">Aucun professeur principal</option>
+                                        {% for teacher in teachers %}
+                                            <option value="{{ teacher.pk }}" {% if form.main_teacher.value == teacher.pk|stringformat:"s" %}selected{% endif %}>
+                                                {{ teacher.first_name }} {{ teacher.last_name }} ({{ teacher.matricule }})
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="{{ form.main_teacher.id_for_label }}">
+                                        <i class="bi bi-person-check me-1"></i>
+                                        Professeur principal
+                                    </label>
+                                </div>
+                                <small class="text-muted">Optionnel - peut être assigné plus tard</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Card Footer with Actions -->
+                    <div class="card-footer bg-light border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <i class="bi bi-info-circle me-1"></i>
+                                * Champs obligatoires
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'core:classes_management' %}" class="btn btn-outline-secondary px-4">
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    Annuler
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
